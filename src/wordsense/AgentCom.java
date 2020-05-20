@@ -55,6 +55,7 @@ public class AgentCom extends Agent {
 				if (msg != null) {
 					String [] res = msg.getContent().split("#");
 					if (!translated.contains(res[0])) {
+						System.out.println("\n************************************************");
 						System.out.println("Definitions de "+res[0]+":");
 						translated.add(res[0]);
 					}
