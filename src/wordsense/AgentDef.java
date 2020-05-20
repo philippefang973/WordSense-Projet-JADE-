@@ -10,7 +10,7 @@ import java.util.regex.*;
 
 public class AgentDef extends Agent {
 	protected void setup() {
-		System.out.println("AgentDef setup!");
+		System.out.println("AgentDef se lance!");
 		addBehaviour(new CyclicBehaviour(this) {
 			public void action() {
 				ACLMessage msg = myAgent.receive();
@@ -19,29 +19,37 @@ public class AgentDef extends Agent {
 						URL url = new URL("https://www.larousse.fr/dictionnaires/francais/" + msg.getContent());
 						BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
 						String line;
-						Pattern pattern = Pattern.compile("(.*)DivisionDefinition(.*)");
-						boolean b1 = false;
-						boolean b2 = false;
-						while ((line = in.readLine()) != null && b1 == b2) {
-							Matcher m = pattern.matcher(line);
+						Pattern p1 = Pattern.compile("(.*)DivisionDefinition(.*)");
+						Pattern p2 = Pattern.compile("(.*)TextePresentatif(.*)");
+						boolean b = false;
+						while ((line = in.readLine()) != null) {
+							if (line.matches("(.*)</article>(.*)")) break; 
+							Matcher m = p1.matcher(line);
+							Matcher m2 = p2.matcher(line);
 							if (m.find()) {
-								b2 = true;
-								b1 = true;
+								b = true;
 								if (!line.matches("\\s*")) {
 									String def = line.trim().replaceAll("</p>", "/ ");
-									def = def.replaceAll("<.*?>", "").replace("&nbsp;", "").split(":")[0];
+									def = def.replaceAll("<.*?>", "").replace("&nbsp;", "");
 									ACLMessage reply = msg.createReply();
 									reply.setPerformative(ACLMessage.PROPOSE);
-									reply.setContent(msg.getContent() + ":" + def);
+									reply.setContent(msg.getContent() + "#\t-" + def);
 									myAgent.send(reply);
 								}
-							} else
-								b1 = false;
+							} else if (m2.find()){
+								if (!line.matches("\\s*")) {
+									String def = line.trim().replaceAll("<.*?>", "").replace("&nbsp;", "");
+									ACLMessage reply = msg.createReply();
+									reply.setPerformative(ACLMessage.PROPOSE);
+									reply.setContent(msg.getContent() + "#" + def);
+									myAgent.send(reply);
+								}
+							} 
 						}
-						if (!b1 && !b2) {
+						if (!b) {
 							ACLMessage reply = msg.createReply();
 							reply.setPerformative(ACLMessage.REFUSE);
-							reply.setContent(msg.getContent() + ":(pas de definition)");
+							reply.setContent(msg.getContent() + "#\t(pas de definition)");
 							myAgent.send(reply);
 						}
 						in.close();
@@ -54,6 +62,6 @@ public class AgentDef extends Agent {
 	}
 
 	protected void takeDown() {
-		System.out.println("AgentDef taken down!");
+		System.out.println("AgentDef termine!");
 	}
 }
