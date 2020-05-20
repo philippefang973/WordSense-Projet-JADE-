@@ -1,2 +1,2 @@
 Ceci est un projet de développement d'un système multi agent
-J'ai du mal a resoudre ce casse-tête aujourd'hui, que faire?
+Le principe consiste à définir des mots français et à les afficher

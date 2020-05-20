@@ -11,6 +11,9 @@ import jade.lang.acl.ACLMessage;
 import java.sql.*;
 
 public class AgentCom extends Agent {
+	HashSet<String> translated = new HashSet<String>();
+	HashSet<String> read = new HashSet<String>();
+	
 	protected void setup() {
 		try {
 		System.out.println("AgentCom se lance!");
@@ -21,7 +24,6 @@ public class AgentCom extends Agent {
 		st.executeUpdate("drop table if exists definitions");
 		st.executeUpdate("create table definitions( mot text, defs text)");
 		System.out.println("Base de données prête à stocker");
-		HashSet<String> translated = new HashSet<String>();
 		addBehaviour(new OneShotBehaviour(this) {
 			public void action() {
 				try { 
@@ -30,6 +32,8 @@ public class AgentCom extends Agent {
 					System.out.println("Mots à traiter:");
 					while (sc.hasNext()) {
 						String mot = sc.next().replaceAll("[^\\p{L}-'_]", "");
+						if (read.contains(mot)) continue;
+						read.add(mot);	
 						System.out.print(mot+" ");
 						PreparedStatement pst = c.prepareStatement("insert into definitions(mot,defs) values(?,'')");
 						pst.setString(1,mot);

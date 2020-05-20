@@ -1,0 +1,17 @@
+Pour compiler le projet dans un shell:
+   javac -cp .:lib/jade.jar:lib/mysql-connector-java-5.1.49-bin.jar -d classes src/wordsense/*.java
+
+Pour executer le projet dans un shell:
+   java -cp .:lib/jade.jar:lib/mysql-connector-java-5.1.49-bin.jar:classes jade.Boot -gui -agents "AgentCom:wordsense.AgentCom(FILE_NAME,DB_NAME,DB_USR,DB_PWD);AgentDef:wordsense.AgentDef"
+
+Pour executer dans Eclipse,
+     Vérifier que les fichiers .jar du dossier lib/ sont importés.
+     Configurer l'execution
+     	classe principale:	jade.Boot
+     	arguments:	   	-gui AgentDef:wordsense.AgentDef;AgentCom:wordsense.AgentCom(FILE_NAME,DB_NAME,DB_USR,DB_PWD)
+
+Les paramètres
+     FILE_NAME:	nom du fichier d'entrée qui va être analysé
+     DB_NAME: nom de la base de donnée mySQL
+     DB_USR: nom d'utilisateur mySQL
+     DB_PWD: mot-de-passe mySQL
