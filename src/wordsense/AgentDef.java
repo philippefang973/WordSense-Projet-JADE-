@@ -54,6 +54,7 @@ public class AgentDef extends Agent {
 						}
 						in.close();
 					} catch (Exception e) {
+						System.out.println(e);
 					}
 				} else
 					block();

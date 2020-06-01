@@ -2,11 +2,8 @@
 --Avoir une base de donnée mySQL--
 Pendant l'execution, une table "definitions" sera créée
 
-Pour compiler le projet dans un shell:
-   javac -cp .:lib/jade.jar:lib/mysql-connector-java-5.1.49-bin.jar -d classes src/wordsense/*.java
-
 Pour executer le projet dans un shell:
-   java -cp .:lib/jade.jar:lib/mysql-connector-java-5.1.49-bin.jar:classes jade.Boot -gui -agents "AgentCom:wordsense.AgentCom(FILE_NAME,DB_NAME,DB_USR,DB_PWD);AgentDef:wordsense.AgentDef"
+   ./runProgram.sh FILE_NAME DB_NAME DB_USR DB_PWD
 
 Pour executer dans Eclipse,
      Vérifier que les fichiers .jar du dossier lib/ sont importés.
